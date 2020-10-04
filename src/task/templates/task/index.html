@@ -1,0 +1,27 @@
+{% extends "task/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <a href="{% url 'add-project' %}">ADD PROJECT</a>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="Submit"/>
+    </form>
+
+    {% for project in projects %}
+        <div class="container">
+            {{ project }}
+            <div>
+                {% for task in project.get_all_tasks %}
+                    {{ task }} <br>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
