@@ -6,8 +6,13 @@ from datetime import datetime, timedelta
 
 User = get_user_model()
 
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+
 class Project(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     title = models.CharField(max_length=30)
     desc = models.CharField(max_length=50)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -16,9 +21,9 @@ class Project(models.Model):
         return self.title
 
     @property
-    def get_all_tasks(self):
-        tasks = Task.objects.filter(project=self)
-        return tasks
+    def get_task_count(self):
+        count_task = Task.objects.filter(project=self).count()
+        return count_task
 
     @property
     def get_filtered_tasks(self):

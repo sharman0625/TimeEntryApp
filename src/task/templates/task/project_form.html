@@ -2,12 +2,15 @@
 
 {% block content %}
 
+<br>
 <div class="container">
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" name="Submit"/>
-    </form>
+    <div class="card card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" name="Submit"/>
+        </form>
+    </div>
 </div>
 
 {% endblock content %}
