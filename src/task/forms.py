@@ -18,3 +18,13 @@ class TaskCreateForm(ModelForm):
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+
+        if start_date < datetime.datetime.now(start_date.tzinfo):
+            self.add_error(None, forms.ValidationError('Start date or time must be greater than '+ str(datetime.datetime.now(start_date.tzinfo))))
+        if end_date < start_date:
+            self.add_error(None, forms.ValidationError('End date or time should be greater than start date.'))

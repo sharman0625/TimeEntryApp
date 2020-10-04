@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from datetime import datetime, timedelta
 
 # Create your models here.
 
@@ -18,6 +19,12 @@ class Project(models.Model):
     def get_all_tasks(self):
         tasks = Task.objects.filter(project=self)
         return tasks
+
+    @property
+    def get_filtered_tasks(self):
+        time_threshold = datetime.now(self.date_created.tzinfo) - timedelta(hours=24)
+        results = Task.objects.filter(project=self).filter(end_date__gt=time_threshold)
+        return results
 
 class Task(models.Model):
     title = models.CharField(max_length=30)
